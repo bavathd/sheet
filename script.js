@@ -31,7 +31,7 @@ function renderList(rows) {
         const fileName = `${name.replace(/ /g, "")}_${armyNo}.pdf`;
 
         const li = document.createElement("li");
-        li.textContent = `${name} (${armyNo})`;
+        li.textContent = `${name}`;
 
         li.onclick = () => openDetails(row, fileName);
 
