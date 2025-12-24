@@ -6,7 +6,7 @@ window.onload = function () {
 };
 
 function loadExcel() {
-    fetch("Paramount.xlsx")
+    fetch("https://bavathd.in/sheet/Paramount.xlsx")
         .then(res => res.arrayBuffer())
         .then(buffer => {
             const wb = XLSX.read(buffer, { type: "array" });
