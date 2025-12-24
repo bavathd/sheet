@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Paramount Card Viewer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Paramount Cards</h1>
+
+    <h3>Upload Excel File</h3>
+    <input type="file" id="excelFile" accept=".xlsx" />
+
+    <input
+      type="text"
+      id="search"
+      placeholder="Search name or army number..."
+      onkeyup="filterList()"
+    />
+
+    <ul id="soldierList"></ul>
+
+    <script src="/paramount_site/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

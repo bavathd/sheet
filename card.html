@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>View Details</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 14px;
+        margin-top: 20px;
+      }
+
+      .cell {
+        background: white;
+        padding: 14px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        text-align: center;
+      }
+
+      .key {
+        font-weight: bold;
+        color: #0056b3;
+        font-size: 15px;
+        margin-bottom: 6px;
+      }
+
+      .value {
+        font-size: 14px;
+        color: #000;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 12px 20px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #0056b3;
+      }
+    </style>
+
+    <!-- PDF libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+    <h1>Personnel Details</h1>
+
+    <div id="detailGrid" class="grid"></div>
+
+    <button id="downloadRowBtn">Download Row PDF</button>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const rowData = JSON.parse(params.get("row"));
+
+      const grid = document.getElementById("detailGrid");
+
+      rowData.forEach((item) => {
+        const cellDiv = document.createElement("div");
+        cellDiv.className = "cell";
+
+        cellDiv.innerHTML = `
+            <div class="key">${item.key}</div>
+            <div class="value">${item.value}</div>
+        `;
+
+        grid.appendChild(cellDiv);
+      });
+
+      // Download Row (Grid) as PDF
+      document.getElementById("downloadRowBtn").onclick = async () => {
+        const { jsPDF } = window.jspdf;
+
+        const gridElement = document.getElementById("detailGrid");
+
+        const canvas = await html2canvas(gridElement);
+        const imgData = canvas.toDataURL("image/png");
+
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const imgWidth = pdfWidth - 20;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+
+        pdf.save("download.pdf");
+      };
+    </script>
+  </body>
+</html>
